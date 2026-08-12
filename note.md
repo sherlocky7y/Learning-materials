@@ -1120,7 +1120,7 @@ int main()
 }
 ```
 
-函数
+## 函数
 
 ### 函数设计原则
 
@@ -1457,6 +1457,63 @@ int main() {
 ```
 
 > 补充:有一个汉诺塔问题也很经典.
+>
+> 什么是汉诺塔问题呢？简单讲就是一个用递归方法解题的典例
+>
+> 问题如下：古代有一个梵塔，塔内有A,B,C3个座，开始时A座上有64个盘子，盘子大小不等，大的在下，小的在上。有一个老和尚想把这64个盘子从A移动到C，但每次规定只能移动一个盘，且在移动3个座上都始终保持大盘在下，小盘在上，移动过程中可以利用B座
+
+![image-20260812145744247](https://raw.githubusercontent.com/sherlocky7y/blog-images/main/imgs/image-20260812145744247.png)
+
+思路：第1个和尚找来第2个和尚把63个盘子移动到B，自己把最低下的盘子从A移动到C，再命令第2个和尚把63个盘子移动到C，同理第2个和尚再找来第3个和尚移动62盘子到另一座他就可以把63个盘子从A移动到B，如此往复直到找到第64个和尚。将一个盘子移动到另一座。（可以看出递归的结束条件时最后一个和尚只需要移动一个盘子）
+
+> 可以先通过三个盘子来举例，直接贴出来好看一点
+
+<img src="https://raw.githubusercontent.com/sherlocky7y/blog-images/main/imgs/image-20260812151720044.png" alt="image-20260812151720044" style="zoom: 50%;" />
+
+可推出移动n个盘子需要$2^n-1$步
+
+> 经过分析可以知道：n个盘子从A移动到C可以分解为以下3个步骤
+
+1. 将A上座上n-1个盘借助C座到B座
+2. 把A座上剩下的一个盘移动到C座
+3. 将n-1个盘从B座借助A座移动到C座上
+
+1，3本质相同
+
+> 可以理解为将one座上n-1个盘移动到two座（借助three座），只是1，3 one two three 对应关系不同。
+
+```c
+#include<stdio.h>
+#include<stdlib.h>
+
+void move(char x,char y){
+    printf("%c->%c\n",x,y);
+}
+
+void hanoi(int n,char a,char b,char c){
+    //a借助b移动n个盘子到c
+    void move(char x,char y);
+    if(n==1){
+        move(a,c);
+    }
+    else{
+        hanoi(n-1,a,c,b);
+        move(a,c);
+        hanoi(n-1,b,a,c);
+    }
+}
+int main(){
+    system("chcp 65001 > nul"); 
+    void hanoi(int,char,char,char);
+    int n;
+    printf("输入盘子数\n");
+    scanf("%d",&n);
+    hanoi(n,'A','B','C');
+    return 0;
+}
+```
+
+> 怎么移动n-1个盘子到b的不重要理解就行，知道要借助谁移动就能明白递归逻辑。
 
 #### 数组作为函数参数
 
